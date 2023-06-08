@@ -1,4 +1,5 @@
 <?php
+
 class ProductClass
 {
     private $db;
@@ -8,9 +9,15 @@ class ProductClass
         $this->db = $db;
     }
 
-    public function getAll()
+    public function getAll($limit = 9, $offset = 0)
     {
-        $stmt = $this->db->query("SELECT * FROM products");
+        $stmt = $this->db->query("SELECT * FROM products ORDER BY id LIMIT $limit OFFSET $offset");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSearch($query, $limit = 9, $offset = 0)
+    {
+        $stmt = $this->db->query("SELECT * FROM products WHERE name LIKE '%$query%' LIMIT $limit OFFSET $offset");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -24,26 +31,24 @@ class ProductClass
 
     public function create($name, $price, $discount, $description, $imageUrl, $categoryId)
     {
-        $stmt = $this->db->prepare("INSERT INTO products VALUES (NULL, :name, :price, :discount, :description, :image, :category_id)");
+        $stmt = $this->db->prepare("INSERT INTO products VALUES (NULL, :name, :price, :discount, :description, :image)");
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':discount', $discount);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':image_url', $imageUrl);
-        $stmt->bindParam(':category_id', $categoryId);
         $stmt->execute();
         return $this->db->lastInsertId();
     }
 
     public function update($id, $name, $price, $discount, $description, $imageUrl, $categoryId)
     {
-        $stmt = $this->db->prepare("UPDATE products SET name = :name, price = :price WHERE id = :id");
+        $stmt = $this->db->prepare("UPDATE products SET name = :name, price = :price, discount = :discount, description = :description, image = :image WHERE id = :id");
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':discount', $discount);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':image_url', $imageUrl);
-        $stmt->bindParam(':category_id', $categoryId);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
@@ -55,4 +60,3 @@ class ProductClass
         $stmt->execute();
     }
 }
-?>

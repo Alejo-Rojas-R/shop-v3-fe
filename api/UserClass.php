@@ -1,4 +1,5 @@
 <?php
+
 class UserClass
 {
     private $db;
@@ -10,8 +11,7 @@ class UserClass
 
     public function getAll()
     {
-        $stmt = $this->db->prepare("SELECT * FROM users");
-        $stmt->execute();
+        $stmt = $this->db->query("SELECT * FROM users");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -19,6 +19,15 @@ class UserClass
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function validateUser($email, $password)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

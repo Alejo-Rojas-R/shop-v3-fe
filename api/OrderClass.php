@@ -1,5 +1,6 @@
 <?php
-class ProductClass
+
+class OrderClass
 {
     private $db;
 
@@ -22,9 +23,17 @@ class ProductClass
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($name, $userId, $productId, $quantity, $totalPrice)
+    public function getByUser($userId)
     {
-        $stmt = $this->db->prepare("INSERT INTO orders VALUES (NULL, :user_id, :product_id, :quantity, :total_price)");
+        $stmt = $this->db->prepare("SELECT * FROM orders INNER JOIN products ON orders.product_id = products.id WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create($userId, $productId, $quantity, $totalPrice)
+    {
+        $stmt = $this->db->prepare("INSERT INTO orders (user_id, product_id, quantity, total_price) VALUES (:user_id, :product_id, :quantity, :total_price)");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':product_id', $productId);
         $stmt->bindParam(':quantity', $quantity);
@@ -51,4 +60,3 @@ class ProductClass
         $stmt->execute();
     }
 }
-?>
