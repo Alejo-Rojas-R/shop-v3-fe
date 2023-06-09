@@ -96,3 +96,7 @@ img {
 .offcanvas-body {
     overflow-x: hidden;
 }
+
+.body {
+    min-height: calc(100dvh - 9em);
+}
