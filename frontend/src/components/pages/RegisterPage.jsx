@@ -28,8 +28,8 @@ export const RegisterPage = () => {
         axios.post('http://localhost/imagineapps-challenge/api/?table=users', JSON.stringify(formData)).then(response => {
             return response.data
         }).then(data => {
-            setUserInfo({ 'id': data.id, 'name': formData.name });
             navigate('/');
+            setUserInfo({ 'id': data.id, 'name': formData.name });
         }).catch(error => {
             console.log(error);
         })
@@ -83,7 +83,7 @@ export const RegisterPage = () => {
                                 Register
                             </Button>
 
-                            <Link to='/login'>Login instead</Link>
+                            <Link to='/Login'>Login instead</Link>
                         </Container>
                     </Form>
                 </Col>

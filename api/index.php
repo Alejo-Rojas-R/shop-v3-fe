@@ -78,13 +78,13 @@ function handleGetRequest()
         }
     } elseif ($query) {
         // Get query
-        $result = $model->getSearch($query);
+        $result = $model->getSearch($query, $_GET['limit'], $_GET['offset']);
     } elseif ($validateUser) {
         // Get query
         $result = $model->validateUser($_GET['email'], $_GET['password']);
     } else {
         // Get all rows
-        $result = $model->getAll();
+        $result = $model->getAll($_GET['limit'], $_GET['offset']);
     }
 
     return $result;

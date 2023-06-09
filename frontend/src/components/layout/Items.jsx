@@ -21,8 +21,8 @@ export const Items = ({ data }) => {
         ))}
       </Row>
 
-      {(data.length > 9) &&
-        <ResultsPagination total={data.data.total} />
+      {(data.data[0].total > 9) &&
+        <ResultsPagination total={data.data[0].total} />
       }
     </>
   )

@@ -11,7 +11,7 @@ class ProductClass
 
     public function getAll($limit = 9, $offset = 0)
     {
-        $stmt = $this->db->query("SELECT * FROM products ORDER BY id LIMIT $limit OFFSET $offset");
+        $stmt = $this->db->query("SELECT *, COUNT(*) OVER () AS total FROM products ORDER BY id LIMIT $limit OFFSET $offset");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

@@ -32,13 +32,10 @@ export const Routing = () => {
                                 <Route path='/product/:id' element={<ItemPage />} />
                                 <Route path='/search' element={<SearchPage />} />
 
-                                <Route path='/login' element={!userInfo ? <LoginPage /> : <Navigate to='/account' />} />
-                                <Route path='/register' element={!userInfo ? <RegisterPage /> : <Navigate to='/account' />} />
+                                <Route path='/login' element={<LoginPage />} />
+                                <Route path='/register' element={<RegisterPage />} />
 
                                 <Route path='/account' element={userInfo ? <AccountPage /> : <Navigate to='/login' />} />
-                                {/*
-                        <Route path='*' element={<NotFound />} />
-                        */}
                             </Routes>
                         </div>
                         <Footer />

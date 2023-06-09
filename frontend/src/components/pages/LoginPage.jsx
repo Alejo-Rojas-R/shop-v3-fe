@@ -27,8 +27,8 @@ export const LoginPage = () => {
       if (!data) {
         setError('No user found with these credentials');
       } else {
-        setUserInfo({ 'id': data.id, 'name': formData.email });
         navigate('/');
+        setUserInfo({ 'id': data.id, 'name': formData.email });
       }
     }).catch(error => {
       console.log(error.response.data.error)
@@ -57,7 +57,7 @@ export const LoginPage = () => {
                 Login
               </Button>
 
-              <Link to='/register'>Register instead</Link>
+              <Link to='/Register'>Register instead</Link>
             </Container>
           </Form>
         </Col>
