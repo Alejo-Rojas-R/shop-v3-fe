@@ -7,7 +7,12 @@ require_once 'OrderClass.php';
 
 header('Access-Control-Allow-Origin: *');
 
-$db = new DbClass('localhost', 'imagineapps-challenge', 'root', '');
+$host = 'localhost';
+$database = 'imagineapps-challenge';
+$user = 'root';
+$password = '';
+
+$db = new DbClass($host, $database, $user, $password);
 $conn = $db->connect();
 
 if (!$conn) {
