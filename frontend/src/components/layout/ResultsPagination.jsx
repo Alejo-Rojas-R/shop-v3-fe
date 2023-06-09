@@ -55,13 +55,13 @@ export const ResultsPagination = ({ total }) => {
 
     return (
         <Pagination className='d-flex justify-content-center py-5 gap-3'>
-            <Pagination.First disabled={page === 1 ? true : false} onClick={handleFirstClick} className='pagination__control'><i className="bi bi-skip-backward-fill"/></Pagination.First>
-            <Pagination.Prev disabled={page <= 1 ? true : false} onClick={handlePrevClick} className='pagination__control'><i className="bi bi-caret-left-fill"/></Pagination.Prev>
+            <Pagination.First id='first-page' disabled={page === 1 ? true : false} onClick={handleFirstClick} className='pagination__control'><i className="bi bi-skip-backward-fill"/></Pagination.First>
+            <Pagination.Prev id='prev-page' disabled={page <= 1 ? true : false} onClick={handlePrevClick} className='pagination__control'><i className="bi bi-caret-left-fill"/></Pagination.Prev>
 
             {paginationNumbers}
 
-            <Pagination.Next disabled={page * 9 >= total ? true : false} onClick={handleNextClick} className='pagination__control'><i className="bi bi-caret-right-fill"/></Pagination.Next>
-            <Pagination.Last disabled={page * 9 >= total ? true : false} onClick={handleLastClick} className='pagination__control'><i className="bi bi-skip-forward-fill"/></Pagination.Last>
+            <Pagination.Next id='next-page' disabled={page * 9 >= total ? true : false} onClick={handleNextClick} className='pagination__control'><i className="bi bi-caret-right-fill"/></Pagination.Next>
+            <Pagination.Last id='last-page' disabled={page * 9 >= total ? true : false} onClick={handleLastClick} className='pagination__control'><i className="bi bi-skip-forward-fill"/></Pagination.Last>
         </Pagination>
     );
 }

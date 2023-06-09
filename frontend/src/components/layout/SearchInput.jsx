@@ -7,7 +7,7 @@ export const SearchInput = ({collapsible = true, variant='outline-info'}) => {
     const [query, setQuery] = useState('');
     const [toggleBar, setToggleBar] = useState(true);
     const refQueryInput = useRef();
-    const navigate = useNavigate();
+    const navigate = useNavigate(null);
 
     const handleWriteSearch = () => {
         setQuery(refQueryInput.current.value);

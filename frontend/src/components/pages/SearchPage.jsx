@@ -2,13 +2,9 @@ import { Items } from '../layout/Items'
 import { useFetch } from '../../hooks/useFetch'
 import { useSearchParams } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
-import { UserInfoContext } from '../../routes/Routing';
-import { useContext } from 'react';
-import { CloseSession } from '../layout/CloseSession';
 
 export const SearchPage = () => {
   const [params] = useSearchParams();
-  const { userInfo } = useContext(UserInfoContext);
 
   const query = params.get('query') ?? '';
   const page = parseInt(params.get('page') ?? 1);
