@@ -11,7 +11,7 @@ export const ItemPage = () => {
 
   const { id } = useParams();
 
-  const { data, loading } = useFetch(`http://localhost/imagineapps-challenge/api/?table=products&id=${id}`);
+  const { data, loading } = useFetch(`?table=products&id=${id}`);
 
   // Loading spinner
   if (loading === true) {

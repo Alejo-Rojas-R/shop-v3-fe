@@ -8,7 +8,7 @@ import { useContext } from 'react';
 
 export const AccountPage = () => {
     const { userInfo } = useContext(UserInfoContext);
-    const { data, loading } = useFetch(`http://localhost/imagineapps-challenge/api/?table=orders&id=${userInfo.id}`);
+    const { data, loading } = useFetch(`?table=orders&id=${userInfo.id}`);
 
     const formatUSD = Intl.NumberFormat("en-US", {
         style: "currency",

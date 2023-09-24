@@ -1,32 +1,30 @@
-import axios from 'axios';
 import { useContext, useState } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserInfoContext } from '../../routes/Routing';
+import { useForm } from '../../hooks/useForm';
+import { api } from '../../apiEndPoint';
 
 export const RegisterPage = () => {
+
     const navigate = useNavigate();
     const { userInfo, setUserInfo } = useContext(UserInfoContext)
 
-    const [formData, setFormData] = useState({
+    const { formData, handleChange } = useForm({
         name: '',
         last_name: '',
         email: '',
         password: '',
         type: '',
         address: '',
-        phone: ''
+        phone: '',
     });
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
 
     const handleSubmit = (e) => {
 
         // TODO: Handle form submission
-        axios.post('http://localhost/imagineapps-challenge/api/?table=users', JSON.stringify(formData)).then(response => {
-            return response.data
+        api.post('?table=users', JSON.stringify(formData)).then(response => {
+            return response.data;
         }).then(data => {
             navigate('/');
             setUserInfo({ 'id': data.id, 'name': formData.name });

@@ -9,7 +9,7 @@ export const SearchPage = () => {
   const query = params.get('query') ?? '';
   const page = parseInt(params.get('page') ?? 1);
 
-  let itemsUrl = `http://localhost/imagineapps-challenge/api/?table=products&limit=9&offset=${(page - 1) * 9}`;
+  let itemsUrl = `?table=products&limit=9&offset=${(page - 1) * 9}`;
   itemsUrl += (query !== '') ? `&query=${query}` : '';
 
   const data = useFetch(itemsUrl);

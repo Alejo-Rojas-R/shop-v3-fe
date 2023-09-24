@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { api } from '../apiEndPoint';
 
 export const useFetch = (url) => {
 
@@ -12,8 +12,8 @@ export const useFetch = (url) => {
 
     const getData = async () => {
         setLoading(true);
-
-        const response = await axios.get(url);
+        
+        const response = await api.get(url);
         setData(response.data);
         
         setLoading(false);

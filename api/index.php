@@ -8,7 +8,7 @@ require_once 'OrderClass.php';
 header('Access-Control-Allow-Origin: *');
 
 $host = 'localhost';
-$database = 'imagineapps-challenge';
+$database = 'react-shop-v2';
 $user = 'root';
 $password = '';
 

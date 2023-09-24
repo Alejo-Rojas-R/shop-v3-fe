@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useContext, useState } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserInfoContext } from '../../routes/Routing';
+import { api } from '../../apiEndPoint';
 
 export const LoginPage = () => {
   const { setUserInfo } = useContext(UserInfoContext)
@@ -21,7 +21,7 @@ export const LoginPage = () => {
     e.preventDefault();
 
     // TODO: Handle form submission
-    axios.get('http://localhost/imagineapps-challenge/api/?table=users&validate_user=true', { params: formData }).then(response => {
+    api.get('?table=users&validate_user=true', { params: formData }).then(response => {
       return response.data
     }).then(data => {
       if (!data) {
