@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserInfoContext } from '../../routes/Routing';
@@ -27,7 +27,7 @@ export const RegisterPage = () => {
             return response.data;
         }).then(data => {
             navigate('/');
-            setUserInfo({ 'id': data.id, 'name': formData.name });
+            //setUserInfo({ 'id': data.id, 'name': formData.name });
         }).catch(error => {
             console.log(error);
         })

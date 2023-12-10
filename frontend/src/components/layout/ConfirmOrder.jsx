@@ -2,19 +2,23 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { OrderDialogContext } from '../../routes/Routing';
 import { UserInfoContext } from '../../routes/Routing';
 import { CartCountContext } from '../../routes/Routing';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleShow } from '../../redux/dialogSlice';
+import { api } from '../../apiEndPoint';
 
 export const ConfirmOrder = () => {
     const navigate = useNavigate(null);
-    const { showDialog, setShowDialog } = useContext(OrderDialogContext);
     const { userInfo } = useContext(UserInfoContext);
     const { cartCount, setCartCount } = useContext(CartCountContext);
+    const dispatch = useDispatch();
 
     const handleClose = () => {
-        setShowDialog(false);
+        dispatch(toggleShow())
     };
+
+    const modalProperties = useSelector((state) => state.dialog);
 
     // Handle form submission
     const handleConfirm = () => {
@@ -28,12 +32,12 @@ export const ConfirmOrder = () => {
                 quantity: 1,
             };
 
-            axios.post('http://localhost/imagineapps-challenge/api/?table=orders', JSON.stringify(order)).then(response => {
+            api.post('?table=orders', JSON.stringify(order)).then(response => {
                 return response.data
             }).then(data => {
                 localStorage.removeItem('cart');
                 setCartCount(0);
-                setShowDialog(false);
+                dispatch(toggleShow())
                 navigate('/Account');
             }).catch(error => {
                 console.log(error);
@@ -42,21 +46,19 @@ export const ConfirmOrder = () => {
     };
 
     return (
-        <div>
-            <Modal show={showDialog} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Order</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to order all the {cartCount} current items in the cart?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={handleConfirm}>
-                        Confirm
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+        <Modal show={modalProperties.show} onHide={handleClose} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>{modalProperties.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{modalProperties.body}</Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={handleConfirm}>
+                    Accept
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 }
