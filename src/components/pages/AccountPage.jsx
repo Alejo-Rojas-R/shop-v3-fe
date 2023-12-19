@@ -8,7 +8,7 @@ import { useContext } from 'react';
 
 export const AccountPage = () => {
     const { userInfo } = useContext(UserInfoContext);
-    const { data, loading } = useFetch(`?table=orders&id=${userInfo.id}`);
+    const { data, loading } = useFetch(`/orders/${userInfo.id}`);
 
     const formatUSD = Intl.NumberFormat("en-US", {
         style: "currency",
@@ -54,7 +54,7 @@ export const AccountPage = () => {
                                 </Card.Text>
                             </Col>
                             <Col xs={2} className='d-flex align-items-center justify-content-center'>
-                                <Card.Img className='cover img-fluid w-50' src={item.image_url} alt='' />
+                                <Card.Img className='cover img-fluid w-50' src={item.imageUrl} alt='' />
                             </Col>
                         </Card>
                     )

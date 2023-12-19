@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const api = axios.create({
-    baseURL: 'http://localhost:8080/react-shop-v2/api'
+    baseURL: 'http://localhost:8080/api/v1/shop-v3'
 });

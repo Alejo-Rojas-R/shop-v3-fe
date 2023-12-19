@@ -32,7 +32,7 @@ export const ConfirmOrder = () => {
                 quantity: 1,
             };
 
-            api.post('?table=orders', JSON.stringify(order)).then(response => {
+            api.post('/orders', JSON.stringify(order)).then(response => {
                 return response.data
             }).then(data => {
                 localStorage.removeItem('cart');
