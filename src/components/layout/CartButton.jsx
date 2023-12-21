@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Badge, Button, Card, Col, Offcanvas, Row } from 'react-bootstrap'
-import { CartCountContext } from '../../routes/Routing';
-import { UserInfoContext } from '../../routes/Routing';
 import { ConfirmOrder } from './ConfirmOrder';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setDialog, toggleShow } from '../../redux/dialogSlice';
+import { setCart } from '../../redux/cartSlice';
+import { setUser } from '../../redux/userSlice';
 
 export const CartButton = () => {
-    const { cartCount, setCartCount } = useContext(CartCountContext);
-    const { userInfo } = useContext(UserInfoContext);
+
     const [showSideBar, setShowSideBar] = useState(false);
     const [total, setTotal] = useState(0);
     const [items, setItems] = useState({});
     const navigate = useNavigate(null);
     const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.user);
+    const cartCount = useSelector(state => state.cart.count);
 
     useEffect(() => {
         let items = JSON.parse(localStorage.getItem('cart'));
@@ -33,11 +34,11 @@ export const CartButton = () => {
         currency: "USD",
     });
 
-    const handleCart = () => {
+    const handleCartVisibility = () => {
         setShowSideBar(!showSideBar);
     }
 
-    const handleRemove = (e, id) => {
+    const handleRemoveItem = (e, id) => {
         e.preventDefault();
 
         const removedItems = items.filter((item) => {
@@ -45,14 +46,15 @@ export const CartButton = () => {
         }, id);
 
         setItems(removedItems);
-        setCartCount(removedItems.length);
+
         localStorage.setItem('cart', JSON.stringify(removedItems));
+        dispatch(setCart())
     }
 
     const handleOrder = (e) => {
         if (cartCount === 0) {
             e.preventDefault();
-        } else if (userInfo) {
+        } else if (currentUser) {
             dispatch(setDialog({
                 title: 'Confirm Order',
                 body: `Are you sure you want to order all the ${cartCount} current items in the cart?`
@@ -67,12 +69,12 @@ export const CartButton = () => {
 
     return (
         <>
-            <Button variant='outline-info' className='position-relative ms-2 border-0 rounded-circle' onClick={handleCart}>
+            <Button variant='outline-info' className='position-relative ms-2 border-0 rounded-circle' onClick={handleCartVisibility}>
                 <Badge pill className='bg-info position-absolute top-100 start-100 translate-middle m-0 px-2 py-1 w-3 border border-white border-2'>{cartCount}</Badge>
                 <i className='bi bi-cart2'></i>
             </Button>
 
-            <Offcanvas placement='end' show={showSideBar} onHide={handleCart}>
+            <Offcanvas placement='end' show={showSideBar} onHide={handleCartVisibility}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Items in cart: {cartCount}</Offcanvas.Title>
                 </Offcanvas.Header>
@@ -91,7 +93,7 @@ export const CartButton = () => {
                                             <Card.Text>{formatUSD.format(item.price)}</Card.Text>
                                         </Col>
                                     </Row>
-                                    <Button onClick={(e) => { handleRemove(e, item.id) }} variant='dark' className='position-absolute bottom-0 end-0 m-2' ><i className='bi bi-trash-fill'></i></Button>
+                                    <Button onClick={(e) => { handleRemoveItem(e, item.id) }} variant='dark' className='position-absolute bottom-0 end-0 m-2' ><i className='bi bi-trash-fill'></i></Button>
                                 </NavLink>
                             </Card>
                         )

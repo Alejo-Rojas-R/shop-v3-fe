@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
 import { CloseSession } from '../layout/CloseSession';
 import { useFetch } from '../../hooks/useFetch';
 import { Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { UserInfoContext } from '../../routes/Routing';
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 export const AccountPage = () => {
-    const { userInfo } = useContext(UserInfoContext);
-    const { data, loading } = useFetch(`/orders/${userInfo.id}`);
+    const currentUser = useSelector(state => state.user);
+    const { data, loading } = useFetch(`/orders/${currentUser.id}`);
 
     const formatUSD = Intl.NumberFormat("en-US", {
         style: "currency",

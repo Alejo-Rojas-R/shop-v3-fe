@@ -2,11 +2,10 @@ import { NavLink } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { CartButton } from './CartButton';
-import { UserInfoContext } from '../../routes/Routing';
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 export const Header = () => {
-    const { userInfo } = useContext(UserInfoContext);
+    const currentUser = useSelector(state => state.user);
 
     return (
         <Navbar expand='md' className='p-3' bg='white' variant='white'>
@@ -25,7 +24,7 @@ export const Header = () => {
                             Home
                         </Nav.Link>
 
-                        <Nav.Link as={NavLink} to={userInfo ? '/Account' : '/Login'} className='text-dark link-underline link-underline-opacity-0'>
+                        <Nav.Link as={NavLink} to={currentUser ? '/Account' : '/Login'} className='text-dark link-underline link-underline-opacity-0'>
                             Account
                         </Nav.Link>
                     </Nav>

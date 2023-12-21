@@ -1,12 +1,13 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserInfoContext } from '../../routes/Routing';
 import { api } from '../../apiEndPoint';
+import { setCurrentUser } from '../../redux/userSlice';
+import { useDispatch } from 'react-redux';
 
 export const LoginPage = () => {
-    const { setUserInfo } = useContext(UserInfoContext)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [error, setError] = useState('')
     const [formData, setFormData] = useState({
         email: '',
@@ -28,7 +29,7 @@ export const LoginPage = () => {
                 setError('No user found with these credentials');
             } else {
                 navigate('/');
-                setUserInfo({ 'id': data.id, 'name': formData.email });
+                dispatch(setCurrentUser({ 'id': data.id, 'name': formData.email }));
             }
         }).catch(error => {
             console.log(error.response.data.error)

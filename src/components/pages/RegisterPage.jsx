@@ -1,14 +1,13 @@
-import { useContext } from 'react'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserInfoContext } from '../../routes/Routing';
 import { useForm } from '../../hooks/useForm';
 import { api } from '../../apiEndPoint';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from '../../redux/userSlice';
 
 export const RegisterPage = () => {
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { userInfo, setUserInfo } = useContext(UserInfoContext)
 
     const { formData, handleChange } = useForm({
         name: '',
@@ -27,7 +26,7 @@ export const RegisterPage = () => {
             return response.data;
         }).then(data => {
             navigate('/');
-            //setUserInfo({ 'id': data.id, 'name': formData.name });
+            dispatch(setCurrentUser({ 'id': data.id, 'name': formData.name }))
         }).catch(error => {
             console.log(error);
         })

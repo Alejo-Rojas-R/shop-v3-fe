@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        count: []
+        count: 0
     },
     reducers: {
         setCart: (state, action) => {
-            const { items } = action.payload;
-            state.items = items
+            const countCartItems = JSON.parse(localStorage.getItem('cart'))?.length;
+            state.count = countCartItems;
         },
 
     }

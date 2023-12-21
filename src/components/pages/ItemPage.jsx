@@ -1,14 +1,9 @@
-import React, { useContext } from 'react'
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../../hooks/useFetch';
 import { ImagesCarousel } from '../layout/ImagesCarousel';
-import { CartCountContext } from '../../routes/Routing';
 
 export const ItemPage = () => {
-
-    const { setCartCount } = useContext(CartCountContext);
-
     const { id } = useParams();
 
     const { data, loading } = useFetch(`/products/${id}`);
@@ -42,7 +37,7 @@ export const ItemPage = () => {
 
         const countCartItems = JSON.parse(localStorage.getItem('cart')).length;
 
-        setCartCount(countCartItems);
+        //setCartCount(countCartItems);
     }
 
     return (

@@ -1,18 +1,14 @@
 import axios from 'axios';
-import { useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { UserInfoContext } from '../../routes/Routing';
-import { CartCountContext } from '../../routes/Routing';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleShow } from '../../redux/dialogSlice';
 import { api } from '../../apiEndPoint';
 
 export const ConfirmOrder = () => {
     const navigate = useNavigate(null);
-    const { userInfo } = useContext(UserInfoContext);
-    const { cartCount, setCartCount } = useContext(CartCountContext);
     const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.user);
 
     const handleClose = () => {
         dispatch(toggleShow())
@@ -26,7 +22,7 @@ export const ConfirmOrder = () => {
 
         items.map((item) => {
             const order = {
-                user_id: userInfo.id,
+                user_id: currentUser.id,
                 product_id: item.id.replace('item_', ''),
                 total_price: item.price,
                 quantity: 1,
@@ -36,7 +32,6 @@ export const ConfirmOrder = () => {
                 return response.data
             }).then(data => {
                 localStorage.removeItem('cart');
-                setCartCount(0);
                 dispatch(toggleShow())
                 navigate('/Account');
             }).catch(error => {

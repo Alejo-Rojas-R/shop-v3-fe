@@ -1,14 +1,15 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Card, Button, Row, Col, Badge } from 'react-bootstrap';
-import { CartCountContext } from '../../routes/Routing';
+import { useDispatch } from 'react-redux';
+import { setCart } from '../../redux/cartSlice';
 
 export const Item = ({ item }) => {
     const itemId = useRef('');
     const itemTitle = useRef('');
     const itemPrice = useRef('');
     const itemThumb = useRef('');
-    const { setCartCount } = useContext(CartCountContext);
+    const dispatch = useDispatch();
 
     const handleCart = (e) => {
         e.preventDefault();
@@ -24,10 +25,7 @@ export const Item = ({ item }) => {
         ]);
 
         localStorage.setItem('cart', items);
-
-        const countCartItems = JSON.parse(localStorage.getItem('cart')).length;
-
-        setCartCount(countCartItems);
+        dispatch(setCart());
     }
 
     const formatUSD = Intl.NumberFormat("en-US", {
