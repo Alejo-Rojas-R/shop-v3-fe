@@ -1,18 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../apiEndPoint';
 import { setCurrentUser } from '../../redux/userSlice';
 import { useDispatch } from 'react-redux';
+import { useFetch } from '../../hooks/useFetch';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
-        email: '',
-        password: ''
+        username: '',
+        password: '',
     });
+
+    const { response, loading, fetchData } = useFetch();
+
+    const data = response?.data;
+
+    useEffect(() => {
+        // This effect runs whenever 'response' changes
+        if (response && response.data) {
+            navigate('/');
+            dispatch(setCurrentUser({ id: data.id, name: formData.username }));
+        } else if (response && response.error) {
+            setError(response.error);
+        }
+    }, [response, navigate, dispatch, formData]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,19 +35,7 @@ export const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // TODO: Handle form submission
-        api.get('/users', { params: formData }).then(response => {
-            return response.data
-        }).then(data => {
-            if (!data) {
-                setError('No user found with these credentials');
-            } else {
-                navigate('/');
-                dispatch(setCurrentUser({ 'id': data.id, 'name': formData.email }));
-            }
-        }).catch(error => {
-            console.log(error.response.data.error)
-        })
+        fetchData('/login', 'POST', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     };
 
     return (
@@ -43,9 +45,9 @@ export const LoginPage = () => {
                     <h4 className='mb-3'>Please login to set your order!</h4>
                     <Form onSubmit={handleSubmit} className='d-flex flex-column gap-3 justify-content-center'>
 
-                        <Form.Group controlId='email'>
+                        <Form.Group controlId='username'>
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type='email' name='email' value={formData.email} onChange={handleChange} required />
+                            <Form.Control type='email' name='username' value={formData.username} onChange={handleChange} required />
                         </Form.Group>
 
                         <Form.Group controlId='password'>

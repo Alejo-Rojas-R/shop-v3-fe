@@ -1,28 +1,31 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
-import { api } from '../../apiEndPoint';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '../../redux/userSlice';
+import { useFetch } from '../../hooks/useFetch';
 
 export const RegisterPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const { response, loading, fetchData } = useFetch();
+    const data = response?.data;
     const { formData, handleChange } = useForm({
         name: '',
-        last_name: '',
+        lastName: '',
         email: '',
         password: '',
-        type: '',
         address: '',
         phone: '',
     });
 
     const handleSubmit = (e) => {
+        e.preventDefault();
 
-        // TODO: Handle form submission
-        api.post('?table=users', JSON.stringify(formData)).then(response => {
+        fetchData('/users/signup', 'POST', formData);
+
+        /*
+        api.post('/users/signup', JSON.stringify(formData)).then(response => {
             return response.data;
         }).then(data => {
             navigate('/');
@@ -30,6 +33,7 @@ export const RegisterPage = () => {
         }).catch(error => {
             console.log(error);
         })
+        */
     };
 
     return (
@@ -43,9 +47,9 @@ export const RegisterPage = () => {
                             <Form.Control type='text' name='name' value={formData.name} onChange={handleChange} required />
                         </Form.Group>
 
-                        <Form.Group controlId='last_name'>
+                        <Form.Group controlId='lastName'>
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type='text' name='last_name' value={formData.last_name} onChange={handleChange} required />
+                            <Form.Control type='text' name='lastName' value={formData.lastName} onChange={handleChange} required />
                         </Form.Group>
 
                         <Form.Group controlId='email'>
@@ -56,15 +60,6 @@ export const RegisterPage = () => {
                         <Form.Group controlId='password'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} required />
-                        </Form.Group>
-
-                        <Form.Group controlId='type'>
-                            <Form.Label>Type</Form.Label>
-                            <Form.Control as='select' name='type' value={formData.type} onChange={handleChange} required >
-                                <option value=''>Select Type</option>
-                                <option value='seller'>Seller</option>
-                                <option value='costumer'>Costumer</option>
-                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='address'>

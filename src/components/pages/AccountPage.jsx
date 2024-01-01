@@ -3,10 +3,16 @@ import { useFetch } from '../../hooks/useFetch';
 import { Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const AccountPage = () => {
     const currentUser = useSelector(state => state.user);
-    const { data, loading } = useFetch(`/orders/${currentUser.id}`);
+    const { response, loading, fetchData } = useFetch();
+    const data = response?.data;
+
+    useEffect(() => {
+        fetchData(`/orders/${currentUser.id}`);
+    }, []);
 
     const formatUSD = Intl.NumberFormat("en-US", {
         style: "currency",

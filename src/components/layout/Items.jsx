@@ -16,7 +16,7 @@ export const Items = ({ data, loading }) => {
     return (
         <>
             <Row xs={1} md={2} lg={3} gap={3} className='g-0 item__list'>
-                {data.map((item, index) => (
+                {data?.map((item, index) => (
                     <Item key={index} item={item} />
                 ))}
             </Row>

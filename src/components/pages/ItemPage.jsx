@@ -2,11 +2,18 @@ import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../../hooks/useFetch';
 import { ImagesCarousel } from '../layout/ImagesCarousel';
+import { useEffect } from 'react';
 
 export const ItemPage = () => {
     const { id } = useParams();
 
-    const { data, loading } = useFetch(`/products/${id}`);
+    const { response, loading, fetchData } = useFetch();
+
+    const data = response?.data;
+
+    useEffect(() => {
+        fetchData(`products/${id}`);
+    }, []);
 
     // Loading spinner
     if (loading === true) {

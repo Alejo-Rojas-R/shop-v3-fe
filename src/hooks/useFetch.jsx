@@ -1,39 +1,45 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { api } from '../apiEndPoint';
 
-export const useFetch = (url, method = "", body = {}) => {
-
-    const [data, setData] = useState([]);
+export const useFetch = () => {
+    const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (method == "") {
-            getData();
-        } else if (method == "post") {
-            postData();
+        setResponse(null);
+        setLoading(true);
+        setError(null);
+    }, []);
+
+    const fetchData = async (url, method, body = null, config = {}) => {
+        try {
+            setLoading(true);
+            let result = null;
+
+            switch (method) {
+                case 'POST':
+                    result = await api.post(url, body, config);
+                    break;
+                case 'PUT':
+                    result = await api.put(url, body);
+                    break;
+                case 'DELETE':
+                    result = await api.delete(url);
+                    break;
+                default:
+                    // GET by default
+                    result = await api.get(url);
+                    break;
+            }
+
+            setResponse(result);
+        } catch (e) {
+            setError(e);
+        } finally {
+            setLoading(false);
         }
-    }, [url]);
+    };
 
-    const getData = async () => {
-        setLoading(true);
-
-        const response = await api.get(url);
-        setData(response.data);
-
-        setLoading(false);
-    }
-
-    const postData = async () => {
-        setLoading(true);
-
-        const response = await api.post(url, body);
-        setData(response.data);
-
-        setLoading(false);
-    }
-
-    return {
-        data,
-        loading
-    }
-}
+    return { response, loading, error, fetchData };
+};
