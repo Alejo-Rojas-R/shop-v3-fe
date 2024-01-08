@@ -10,7 +10,7 @@ export const LoginPage = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
     });
 
@@ -19,14 +19,13 @@ export const LoginPage = () => {
     const data = response?.data;
 
     useEffect(() => {
-        // This effect runs whenever 'response' changes
         if (response && response.data) {
-            navigate('/');
-            dispatch(setCurrentUser({ id: data.id, name: formData.username }));
+            navigate('/account');
+            dispatch(setCurrentUser({ 'email': formData.email, 'token': response.data.token }));
         } else if (response && response.error) {
             setError(response.error);
         }
-    }, [response, navigate, dispatch, formData]);
+    }, [response, navigate, dispatch]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +34,7 @@ export const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetchData('/login', 'POST', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        fetchData('/users/login', 'POST', formData);
     };
 
     return (
@@ -47,7 +46,7 @@ export const LoginPage = () => {
 
                         <Form.Group controlId='username'>
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type='email' name='username' value={formData.username} onChange={handleChange} required />
+                            <Form.Control type='email' name='email' value={formData.username} onChange={handleChange} required />
                         </Form.Group>
 
                         <Form.Group controlId='password'>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
@@ -8,6 +9,7 @@ import { useFetch } from '../../hooks/useFetch';
 export const RegisterPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
     const { response, loading, fetchData } = useFetch();
     const data = response?.data;
     const { formData, handleChange } = useForm({
@@ -19,21 +21,19 @@ export const RegisterPage = () => {
         phone: '',
     });
 
+    useEffect(() => {
+        if (response?.data) {
+            navigate('/account');
+            dispatch(setCurrentUser({ 'email': formData.email, 'token': response.data.token }))
+        } else if (response?.error) {
+            setError(response.error);
+        }
+    }, [response, navigate, dispatch]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         fetchData('/users/signup', 'POST', formData);
-
-        /*
-        api.post('/users/signup', JSON.stringify(formData)).then(response => {
-            return response.data;
-        }).then(data => {
-            navigate('/');
-            dispatch(setCurrentUser({ 'id': data.id, 'name': formData.name }))
-        }).catch(error => {
-            console.log(error);
-        })
-        */
     };
 
     return (

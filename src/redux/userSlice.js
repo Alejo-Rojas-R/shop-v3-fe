@@ -6,13 +6,15 @@ export const userSlice = createSlice({
         name: '',
         username: '',
         email: '',
+        token: '',
     },
     reducers: {
         setCurrentUser: (state, action) => {
-            const { name, username, email } = action.payload;
+            const { name, username, email, token } = action.payload;
             state.name = name;
             state.username = username;
             state.email = email;
+            state.token = token;
         },
     }
 });

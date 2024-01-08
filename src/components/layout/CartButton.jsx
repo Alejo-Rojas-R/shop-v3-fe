@@ -5,7 +5,6 @@ import { ConfirmOrder } from './ConfirmOrder';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDialog, toggleShow } from '../../redux/dialogSlice';
 import { setCart } from '../../redux/cartSlice';
-import { setUser } from '../../redux/userSlice';
 
 export const CartButton = () => {
 
@@ -54,7 +53,7 @@ export const CartButton = () => {
     const handleOrder = (e) => {
         if (cartCount === 0) {
             e.preventDefault();
-        } else if (currentUser) {
+        } else if (currentUser.token !== '') {
             dispatch(setDialog({
                 title: 'Confirm Order',
                 body: `Are you sure you want to order all the ${cartCount} current items in the cart?`

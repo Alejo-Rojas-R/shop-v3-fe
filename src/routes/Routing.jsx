@@ -25,7 +25,7 @@ export const Routing = () => {
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
 
-                    <Route path='/account' element={currentUser.name ? <AccountPage /> : <Navigate to='/login' />} />
+                    <Route path='/account' element={currentUser.token ? <AccountPage /> : <Navigate to='/login' />} />
                 </Routes>
             </div>
             <Footer />

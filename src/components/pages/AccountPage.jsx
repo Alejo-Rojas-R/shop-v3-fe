@@ -11,7 +11,7 @@ export const AccountPage = () => {
     const data = response?.data;
 
     useEffect(() => {
-        fetchData(`/orders/${currentUser.id}`);
+        fetchData('/orders/by-user', 'POST', { email: currentUser.email }, { headers: { 'Authorization': `Bearer ${currentUser.token}`, 'Content-Type': 'multipart/form-data' } });
     }, []);
 
     const formatUSD = Intl.NumberFormat("en-US", {
@@ -39,18 +39,18 @@ export const AccountPage = () => {
                     return (
                         <Card key={index} className='mb-3 p-3 d-flex flex-row'>
                             <Col xs={10}>
-                                <Card.Title>{item.name}</Card.Title>
+                                <Card.Title>{item.product.name}</Card.Title>
                                 <Card.Text className='d-flex flex-column'>
-                                    <div className='text-truncate'>
-                                        {item.description}
+                                    <div>
+                                        Quantity: {item.quantity}
                                     </div>
                                     <div>
-                                        Price: {formatUSD.format(item.price)}
+                                        Price: {formatUSD.format(item.totalPrice)}
                                     </div>
                                     <div>
-                                        Ordered at: {item.created_at}
+                                        Ordered at: {item.date}
                                     </div>
-                                    <NavLink to={`/product/${item.id}`} className=''>
+                                    <NavLink to={`/product/${item.product.id}`} className=''>
                                         <Button variant='link p-0 text-info'>
                                             View Product
                                         </Button>
@@ -58,7 +58,7 @@ export const AccountPage = () => {
                                 </Card.Text>
                             </Col>
                             <Col xs={2} className='d-flex align-items-center justify-content-center'>
-                                <Card.Img className='cover img-fluid w-50' src={item.imageUrl} alt='' />
+                                <Card.Img className='cover img-fluid w-50' src={item.product.imageUrl} alt='' />
                             </Col>
                         </Card>
                     )

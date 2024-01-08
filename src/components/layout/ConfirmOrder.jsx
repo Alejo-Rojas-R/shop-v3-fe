@@ -1,14 +1,27 @@
-import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleShow } from '../../redux/dialogSlice';
-import { api } from '../../apiEndPoint';
+import { setCart } from '../../redux/cartSlice';
+import { useEffect } from 'react';
+import { useFetch } from '../../hooks/useFetch';
 
 export const ConfirmOrder = () => {
     const navigate = useNavigate(null);
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.user);
+    const { response, loading, fetchData } = useFetch();
+
+    useEffect(() => {
+        if (response && response.status === 200) {
+            localStorage.removeItem('cart');
+            dispatch(setCart())
+            dispatch(toggleShow())
+            navigate('/Account');
+        } else if (response && response.error) {
+            //setError(response.error);
+        }
+    }, [response, dispatch, navigate])
 
     const handleClose = () => {
         dispatch(toggleShow())
@@ -18,26 +31,20 @@ export const ConfirmOrder = () => {
 
     // Handle form submission
     const handleConfirm = () => {
+
         let items = JSON.parse(localStorage.getItem('cart'));
 
-        items.map((item) => {
+        items.forEach(item => {
             const order = {
-                user_id: currentUser.id,
-                product_id: item.id.replace('item_', ''),
-                total_price: item.price,
                 quantity: 1,
+                totalPrice: item.price,
+                date: Date.now(),
+                userEmail: currentUser.email,
+                idProduct: item.id.replace('item_', ''),
             };
 
-            api.post('/orders', JSON.stringify(order)).then(response => {
-                return response.data
-            }).then(data => {
-                localStorage.removeItem('cart');
-                dispatch(toggleShow())
-                navigate('/Account');
-            }).catch(error => {
-                console.log(error);
-            })
-        })
+            fetchData('/orders', 'POST', order, { headers: { 'Authorization': `Bearer ${currentUser.token}` } });
+        });
     };
 
     return (
