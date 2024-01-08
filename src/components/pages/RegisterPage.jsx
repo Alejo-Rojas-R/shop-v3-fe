@@ -28,7 +28,7 @@ export const RegisterPage = () => {
         } else if (response?.error) {
             setError(response.error);
         }
-    }, [response, navigate, dispatch]);
+    }, [response, dispatch]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

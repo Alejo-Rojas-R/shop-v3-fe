@@ -21,7 +21,7 @@ export const ConfirmOrder = () => {
         } else if (response && response.error) {
             //setError(response.error);
         }
-    }, [response, dispatch, navigate])
+    }, [response, dispatch])
 
     const handleClose = () => {
         dispatch(toggleShow())

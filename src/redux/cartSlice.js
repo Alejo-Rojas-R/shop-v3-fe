@@ -8,7 +8,7 @@ export const cartSlice = createSlice({
     reducers: {
         setCart: (state, action) => {
             const countCartItems = JSON.parse(localStorage.getItem('cart'))?.length;
-            state.count = countCartItems;
+            state.count = (countCartItems === undefined) ? 0 : countCartItems;
         },
 
     }

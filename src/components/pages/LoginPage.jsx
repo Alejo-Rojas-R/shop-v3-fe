@@ -25,7 +25,7 @@ export const LoginPage = () => {
         } else if (response && response.error) {
             setError(response.error);
         }
-    }, [response, navigate, dispatch]);
+    }, [response, dispatch]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

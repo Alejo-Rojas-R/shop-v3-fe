@@ -19,7 +19,7 @@ export const CloseSession = () => {
         } else {
             setError(response?.statusText);
         }
-    }, [response])
+    }, [response, dispatch])
 
     const handleLogout = () => {
         fetchData('/logout');
