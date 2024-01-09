@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch } from 'react-redux';
@@ -9,8 +9,8 @@ import { useFetch } from '../../hooks/useFetch';
 export const RegisterPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [error, setError] = useState('');
-    const { response, loading, fetchData } = useFetch();
+    const [errorMessage, setErrorMessage] = useState('');
+    const { response, loading, fetchData, error } = useFetch();
     const data = response?.data;
     const { formData, handleChange } = useForm({
         name: '',
@@ -22,13 +22,13 @@ export const RegisterPage = () => {
     });
 
     useEffect(() => {
-        if (response?.data) {
-            navigate('/account');
+        if (error) {
+            setErrorMessage(error.data.message);
+        } else if (response && response.status === 200) {
             dispatch(setCurrentUser({ 'email': formData.email, 'token': response.data.token }))
-        } else if (response?.error) {
-            setError(response.error);
+            navigate('/account');
         }
-    }, [response, dispatch]);
+    }, [response, dispatch, error]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,7 +40,7 @@ export const RegisterPage = () => {
         <Container className='p-3'>
             <Row className='justify-content-center'>
                 <Col xs={12} sm={8} md={6}>
-                    <h4 className='mb-3'>Please register to set your order!</h4>
+                    <h4 className='mb-3'>Create Account</h4>
                     <Form onSubmit={handleSubmit} className='d-flex flex-column gap-3 justify-content-center'>
                         <Form.Group controlId='name'>
                             <Form.Label>Name</Form.Label>
@@ -72,12 +72,16 @@ export const RegisterPage = () => {
                             <Form.Control type='tel' name='phone' value={formData.phone} onChange={handleChange} required />
                         </Form.Group>
                         <Container className='d-flex justify-content-between p-0'>
-                            <Button variant='primary' type='submit'>
-                                Register
-                            </Button>
+                            <div className='d-flex gap-2 align-items-center'>
+                                <Button className='rounded-pill' variant='outline-info' type='submit'>
+                                    Register
+                                </Button>
+                                {loading && <Spinner size='sm' animation='border' variant='info' />}
+                            </div>
 
-                            <Link to='/Login'>Login instead</Link>
+                            <Link className='text-info' to='/Login'>Login instead</Link>
                         </Container>
+                        <Form.Text className='danger' muted>{errorMessage}</Form.Text>
                     </Form>
                 </Col>
             </Row>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { setCurrentUser } from '../../redux/userSlice';
 import { useDispatch } from 'react-redux';
@@ -8,24 +8,22 @@ import { useFetch } from '../../hooks/useFetch';
 export const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [error, setError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
 
-    const { response, loading, fetchData } = useFetch();
-
-    const data = response?.data;
+    const { response, loading, fetchData, error } = useFetch();
 
     useEffect(() => {
-        if (response && response.data) {
-            navigate('/account');
+        if (error) {
+            setErrorMessage(error.data.message);
+        } else if (response && response.status === 200) {
             dispatch(setCurrentUser({ 'email': formData.email, 'token': response.data.token }));
-        } else if (response && response.error) {
-            setError(response.error);
+            navigate('/account');
         }
-    }, [response, dispatch]);
+    }, [response, dispatch, error]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,15 +50,18 @@ export const LoginPage = () => {
                         <Form.Group controlId='password'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} required />
-                            <Form.Text className='danger' muted>{error}</Form.Text>
+                            <Form.Text className='danger' muted>{errorMessage}</Form.Text>
                         </Form.Group>
 
                         <Container className='d-flex justify-content-between p-0'>
-                            <Button variant='primary' type='submit'>
-                                Login
-                            </Button>
+                            <div className='d-flex gap-2 align-items-center'>
+                                <Button className='rounded-pill' variant='outline-info' type='submit'>
+                                    Login
+                                </Button>
+                                {loading && <Spinner size='sm' animation='border' variant='info' />}
+                            </div>
 
-                            <Link to='/Register'>Register instead</Link>
+                            <Link className='text-info' to='/Register'>Register instead</Link>
                         </Container>
                     </Form>
                 </Col>

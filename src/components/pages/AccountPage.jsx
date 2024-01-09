@@ -40,7 +40,7 @@ export const AccountPage = () => {
                         <Card key={index} className='mb-3 p-3 d-flex flex-row'>
                             <Col xs={10}>
                                 <Card.Title>{item.product.name}</Card.Title>
-                                <Card.Text className='d-flex flex-column'>
+                                <Card.Text as='div' className='d-flex flex-column'>
                                     <div>
                                         Quantity: {item.quantity}
                                     </div>

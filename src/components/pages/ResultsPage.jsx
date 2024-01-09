@@ -24,7 +24,7 @@ export const ResultsPage = () => {
 
     useEffect(() => {
         fetchData(itemsUrl);
-    }, [itemsUrl, fetchData]);
+    }, [itemsUrl]);
 
     return (
         <Container fluid='lg'>

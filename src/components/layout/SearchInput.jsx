@@ -1,13 +1,26 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { setSearch } from '../../redux/searchSlice';
 
-export const SearchInput = ({collapsible = true, variant='outline-info'}) => {
+export const SearchInput = ({ collapsible = true, variant = 'outline-info' }) => {
 
     const [query, setQuery] = useState('');
     const [toggleBar, setToggleBar] = useState(true);
     const refQueryInput = useRef();
     const navigate = useNavigate(null);
+    const currentSearch = useSelector(state => state.search);
+    const dispatch = useDispatch();
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        if (pathname === '/') {
+            dispatch(setSearch({ query: '' }));
+        } else {
+            setQuery(currentSearch.query);
+        }
+    }, [navigate])
 
     const handleWriteSearch = () => {
         setQuery(refQueryInput.current.value);
@@ -22,9 +35,8 @@ export const SearchInput = ({collapsible = true, variant='outline-info'}) => {
         }
 
         navigate(`/search?query=${query}`);
-
+        dispatch(setSearch({ query: query }));
         setToggleBar(true);
-        setQuery('');
     }
 
     const handleToggleBar = () => {

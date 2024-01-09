@@ -26,6 +26,14 @@ export const CategoriesList = ({ variant }) => {
         );
     }
 
+    if (!data) {
+        return (
+            <Container className='d-flex align-items-center justify-content-center mt-5'>
+                No results
+            </Container>
+        );
+    }
+
     switch (variant) {
         case 'dropdown':
             links = data.map((item, index) => (

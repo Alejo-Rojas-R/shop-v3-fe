@@ -1,19 +1,25 @@
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useFetch } from '../../hooks/useFetch';
 import { ImagesCarousel } from '../layout/ImagesCarousel';
 import { useEffect } from 'react';
+import { CategoryPreview } from '../layout/CategoryPreview';
+import { useDispatch } from 'react-redux';
+import { setCart } from '../../redux/cartSlice';
 
 export const ItemPage = () => {
     const { id } = useParams();
 
     const { response, loading, fetchData } = useFetch();
 
+    const { pathname } = useLocation();
+
     const data = response?.data;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetchData(`products/${id}`);
-    }, []);
+    }, [pathname]);
 
     // Loading spinner
     if (loading === true) {
@@ -24,27 +30,34 @@ export const ItemPage = () => {
         );
     }
 
-    const formatUSD = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', });
+    if (!data) {
+        return (
+            <Container className='d-flex align-items-center justify-content-center mt-5'>
+                No results
+            </Container>
+        );
+    }
+
+    const formatUSD = Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
 
     const handleAddToCart = (e) => {
-
         e.preventDefault();
 
         const cart = JSON.parse(localStorage.getItem('cart')) ?? [];
         const items = JSON.stringify([...cart,
         {
             'id': `item_${data.id}`,
-            'title': data.title,
+            'title': data.name,
             'price': data.price,
-            'image': data.thumbnail,
+            'image': data.imageUrl,
         }
         ]);
 
         localStorage.setItem('cart', items);
-
-        const countCartItems = JSON.parse(localStorage.getItem('cart')).length;
-
-        //setCartCount(countCartItems);
+        dispatch(setCart());
     }
 
     return (
@@ -66,9 +79,14 @@ export const ItemPage = () => {
                 </Col>
             </Row>
             <Row className='p-3 pb-5'>
-                <h5>About this product</h5>
+                <h5>Description</h5>
                 <p className='mb-2' style={{ whiteSpace: 'pre-line' }}>{data.description}</p>
             </Row>
+
+            <Row className='mt-2'>
+                <CategoryPreview category={data.category.id} customTitle='Related products' />
+            </Row>
+
         </Container>
     )
 }

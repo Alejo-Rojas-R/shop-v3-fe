@@ -3,12 +3,33 @@ import { createSlice } from '@reduxjs/toolkit';
 export const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        count: 0
+        items: [],
+        count: 0,
+        total: 0,
     },
     reducers: {
         setCart: (state, action) => {
-            const countCartItems = JSON.parse(localStorage.getItem('cart'))?.length;
-            state.count = (countCartItems === undefined) ? 0 : countCartItems;
+            const cartItems = JSON.parse(localStorage.getItem('cart'));
+
+            if (cartItems !== null) {
+                state.items = cartItems;
+                state.count = (cartItems === undefined) ? 0 : cartItems.length;
+                let total = 0;
+                cartItems.forEach(item => {
+                    total += parseFloat(item.price);
+                });
+
+                const formatUSD = Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                });
+
+                state.total = formatUSD.format(total);
+            } else {
+                state.items = 0;
+                state.count = 0;
+                state.total = 0;
+            }
         },
 
     }

@@ -9,29 +9,14 @@ import { setCart } from '../../redux/cartSlice';
 export const CartButton = () => {
 
     const [showSideBar, setShowSideBar] = useState(false);
-    const [total, setTotal] = useState(0);
-    const [items, setItems] = useState({});
     const navigate = useNavigate(null);
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.user);
-    const cartCount = useSelector(state => state.cart.count);
+    const { items, total, count } = useSelector(state => state.cart);
 
     useEffect(() => {
-        let items = JSON.parse(localStorage.getItem('cart'));
-
-        let total = 0;
-        items?.map((item) => {
-            total += parseFloat(item.price);
-        });
-
-        setItems(items);
-        setTotal(formatUSD.format(total));
-    }, [cartCount]);
-
-    const formatUSD = Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-    });
+        dispatch(setCart())
+    }, []);
 
     const handleCartVisibility = () => {
         setShowSideBar(!showSideBar);
@@ -41,22 +26,20 @@ export const CartButton = () => {
         e.preventDefault();
 
         const removedItems = items.filter((item) => {
-            return item.id != id
+            return item.id !== id
         }, id);
-
-        setItems(removedItems);
 
         localStorage.setItem('cart', JSON.stringify(removedItems));
         dispatch(setCart())
     }
 
     const handleOrder = (e) => {
-        if (cartCount === 0) {
+        if (count === 0) {
             e.preventDefault();
         } else if (currentUser.token !== '') {
             dispatch(setDialog({
                 title: 'Confirm Order',
-                body: `Are you sure you want to order all the ${cartCount} current items in the cart?`
+                body: `Are you sure you want to order all the ${count} current items in the cart?`
             }))
             dispatch(toggleShow())
             setShowSideBar(false);
@@ -66,16 +49,21 @@ export const CartButton = () => {
         }
     }
 
+    const formatUSD = Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+
     return (
         <>
             <Button variant='outline-info' className='position-relative ms-2 border-0 rounded-circle' onClick={handleCartVisibility}>
-                <Badge pill className='bg-info position-absolute top-100 start-100 translate-middle m-0 px-2 py-1 w-3 border border-white border-2'>{cartCount}</Badge>
+                <Badge pill className='bg-info position-absolute top-100 start-100 translate-middle m-0 px-2 py-1 w-3 border border-white border-2'>{count}</Badge>
                 <i className='bi bi-cart2'></i>
             </Button>
 
             <Offcanvas placement='end' show={showSideBar} onHide={handleCartVisibility}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Items in cart: {cartCount}</Offcanvas.Title>
+                    <Offcanvas.Title>Items in cart: {count}</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
 

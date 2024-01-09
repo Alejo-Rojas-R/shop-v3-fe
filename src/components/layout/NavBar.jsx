@@ -1,15 +1,22 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { CartButton } from './CartButton';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const NavBar = () => {
     const currentUser = useSelector(state => state.user);
 
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        document.documentElement.scrollTo(0, 0);
+    }, [pathname])
+
     return (
         <Navbar expand='md' className='p-3' bg='white' variant='white'>
-            <Container fluid>
+            <Container>
                 <Navbar.Brand>
                     <Nav.Link as={NavLink} className='navbar-brand m-0 text-info font-weight-bold' to='/'>
                         <i className='bi bi-cart4' />
@@ -25,7 +32,7 @@ export const NavBar = () => {
                         </Nav.Link>
                     </Nav>
                     <Container className='d-flex justify-content-md-end m-0 p-0'>
-                        <SearchInput collapsible={false} />
+                        <SearchInput collapsible={pathname === '/' ? true : false} />
                         <CartButton />
                     </Container>
                 </Navbar.Collapse>
