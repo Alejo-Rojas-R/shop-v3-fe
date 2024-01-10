@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { CategoryPreview } from '../layout/CategoryPreview';
 import { useDispatch } from 'react-redux';
 import { setCart } from '../../redux/cartSlice';
+import { Reviews } from '../layout/Reviews';
 
 export const ItemPage = () => {
     const { id } = useParams();
@@ -62,31 +63,30 @@ export const ItemPage = () => {
 
     return (
         <Container>
-            <Row className='pt-5 p-3'>
-                <Col md={6}>
+            <Row className='py-5'>
+                <Col md={4}>
                     <ImagesCarousel images={data.imageUrl} />
                 </Col>
-                <Col md={6} >
-                    <Container className='rounded bg-white p-4'>
+                <Col md={8} >
+                    <Container className='rounded bg-white'>
                         <h1 className='mb-2'>{data.name}</h1>
-                        <hr />
                         <div className='d-flex align-items-center'>
                             <h3 className='me-2' data-price={data.price}>{formatUSD.format(data.price)}</h3>
                         </div>
                         <hr />
+                        <Row className='py-3'>
+                            <p className='mb-2' style={{ whiteSpace: 'pre-line' }}>{data.description}</p>
+                        </Row>
                         <Button onClick={handleAddToCart} variant='outline-dark' className='rounded-pill'>Add to Cart <i className='bi bi-cart-plus'></i></Button>
                     </Container>
                 </Col>
             </Row>
-            <Row className='p-3 pb-5'>
-                <h5>Description</h5>
-                <p className='mb-2' style={{ whiteSpace: 'pre-line' }}>{data.description}</p>
+            <Row className='mt-2'>
+                <Reviews reviews={data.review} />
             </Row>
-
             <Row className='mt-2'>
                 <CategoryPreview category={data.category.id} customTitle='Related products' />
             </Row>
-
         </Container>
     )
 }

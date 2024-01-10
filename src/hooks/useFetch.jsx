@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { api } from '../apiEndPoint';
 
 export const useFetch = () => {
-    const [response, setResponse] = useState(null);
+    const [response, setResponse] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState([]);
 
     const fetchData = async (url, method = 'GET', body = null, config = {}) => {
         setLoading(true);

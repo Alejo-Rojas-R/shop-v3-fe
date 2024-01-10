@@ -21,13 +21,11 @@ export const ImagesCarousel = ({ images }) => {
     return (
         <Container>
             <Row>
-                <Col sm={2}>
-                    {images.map((item, index) => (
-                        <Image fluid key={index} className={`rounded mb-2 border border-2 ${activeImage == item ? 'border-primary' : 'border-light'}`} src={item} onClick={handleChangeImage} />
-                    ))}
-                </Col>
-                <Col sm={10}>
+                <Col sm={12} className='text-center mb-4'>
                     <Image fluid className='rounded border border-2 border-light' src={activeImage} />
+                    {/*images.map((item, index) => (
+                        <Image fluid key={index} className={`rounded mb-2 border border-2 ${activeImage == item ? 'border-info' : 'border-light'}`} src={item} onClick={handleChangeImage} />
+                    ))*/}
                 </Col>
             </Row>
         </Container>
