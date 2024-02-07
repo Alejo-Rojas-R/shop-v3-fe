@@ -1,3 +1,8 @@
+
+:root{
+  --bg-main: #00FF1A;
+}
+
 .body {
     background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity));
 }
@@ -99,4 +104,22 @@ img {
 
 .body {
     min-height: calc(100dvh - 9em);
+}
+
+.bg-info {
+  background-color: var(--bg-main) !important;
+}
+
+.text-info {
+  color: var(--bg-main) !important;
+}
+
+.btn-outline-info {
+  --bs-btn-color: var(--bg-main) !important;
+  --bs-btn-border-color: var(--bg-main) !important;
+  --bs-btn-hover-bg: var(--bg-main) !important;
+  --bs-btn-hover-border-color: var(--bg-main) !important;
+  --bs-btn-active-bg: var(--bg-main) !important;
+  --bs-btn-active-border-color: var(--bg-main) !important;
+  --bs-btn-disabled-border-color: var(--bg-main) !important;
 }
