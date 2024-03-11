@@ -1,8 +1,8 @@
 {
   "name": "react-shop-v3",
   "version": "0.1.0",
-  "homepage": "https://alejo-rojas-r.github.io/shop-v3-fe",
   "private": true,
+  "homepage": "https://alejo-rojas-r.github.io/shop-v3-fe",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.16.5",
