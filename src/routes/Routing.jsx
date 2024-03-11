@@ -19,7 +19,7 @@ export const Routing = () => {
       <div className='body'>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/home' element={<Navigate to='/' />} />
+          <Route path='/shop-v3-fe' element={<Navigate to='/' />} />
           <Route path='/product/:id' element={<ItemPage />} />
           <Route path='/search' element={<ResultsPage />} />
 
