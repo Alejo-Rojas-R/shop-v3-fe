@@ -49,9 +49,6 @@ To design the functionalities of this SPA, the following technologies were used:
 
 ![image](https://github.com/Alejo-Rojas-R/shop-v3-fe/assets/125615397/d93864a0-bcd1-4ef8-ab27-ac1520f9d950)
 
-
----
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
