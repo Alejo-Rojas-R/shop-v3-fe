@@ -17,9 +17,7 @@ To design the functionalities of this SPA, the following technologies were used:
 
 # 📑 Pages and Functionalities
 
-### Landing page
-
-### 🔍 Results page
+### 🛬 Landing page
 
 - Search bar to check if a particular item is available in the store.
 - A summary of items by category that are available in the store.
@@ -28,7 +26,7 @@ To design the functionalities of this SPA, the following technologies were used:
 
 ![image](https://github.com/Alejo-Rojas-R/shop-v3-fe/assets/125615397/ecca6775-7bc0-4ea6-9d3a-04f167a575bc)
 
-### ✔️ Results page
+### 🔍 Results page
 
 - Search for a keyword, the results will show if an item with that keyword is available in the store.
 - Users get redirected to this page if they click on the "More" button to see all the items that belong to a category.
