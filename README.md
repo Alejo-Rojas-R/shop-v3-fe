@@ -41,7 +41,7 @@ To design the functionalities of this SPA, the following technologies were used:
 
 ![image](https://github.com/Alejo-Rojas-R/shop-v3-fe/assets/125615397/75994a4e-5959-49c6-bfa6-6ecca5363120)
 
-### 💬 Cart summary
+### 💬 Item details
 
 - Browse through the items to see more details about it.
 - Review the product by leaving a comment and score.
