@@ -1,6 +1,10 @@
 # 🛒 Online Shop Front End
 
-This is a single-page application developed to serve as the front end of an online grocery store. This app is connected to a backend that I developed using Spring MVC. It can be found in the following link: [Spring MVC API RESTful](https://github.com/Alejo-Rojas-R/shop-v3-api). To successfully use this app the API needs to be running in parallel to the front end. By default, the front end is configured to run in the 3000 port and the API in the 8082 port.
+This is a single-page application developed to serve as the front end of an online grocery store. This app is connected to a backend that I developed using Spring MVC. It can be found in the following link: 
+
+[Spring MVC API RESTful](https://github.com/Alejo-Rojas-R/shop-v3-api). 
+
+To successfully use this app the API needs to be running in parallel to the front end. By default, the front end is configured to run in the 3000 port and the API in the 8082 port.
 
 # Pages and Functionalities
 
